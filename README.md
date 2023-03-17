@@ -54,6 +54,13 @@ Don't forget to install all dependencies!
 $ http://localhost:3001/api
 ```
 
+Don't forget to install Prisma cli
+
+```bash
+# To run Prisma studio
+$ npx prisma studio
+```
+
 ![swagger pic](https://user-images.githubusercontent.com/94652612/225884326-c0870fd1-dddb-4809-b826-d0abbefc0c1a.png)
 
 
