@@ -9,3 +9,65 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model User{
+  id Int @id @default(autoincrement())
+  name String
+  surname String
+  registrationDate DateTime @default(now())
+  eMail String @unique
+  hash String
+  dateOfBirth DateTime
+  phoneNumber String @unique
+  subscribedToNewsletter Boolean
+  orderHistory Order[]
+  subscription Subscription[]
+  address Address?
+
+  @@map("users")
+}
+
+model Address{
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int @unique
+  city String
+  district String
+  fullAddress String
+  postalCode String
+
+  @@map("addresses")
+}
+
+model Order{
+  id Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  standardPad Int
+  superPad Int
+  superPlusPad Int
+  beijeTampon Int
+  orderPrice Decimal
+
+  // @@map("orders")
+}
+
+model Subscription{
+  id Int @id @default(autoincrement())
+  subscriptionType Json
+  subscriptionPrice Decimal
+  startDate DateTime
+  endDate DateTime
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId Int
+  standardPad Int
+  superPad Int
+  superPlusPad Int
+  beijeTampon Int
+
+}
+
+model BlacklistedToken{
+  id Int @id @default(autoincrement())
+  token String @unique
+}
