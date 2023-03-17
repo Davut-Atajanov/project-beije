@@ -96,4 +96,40 @@ export class SubscriptionsService {
             return error;
         }
     }
+
+    async renewExpiredSubscriptions() {
+
+        const subscriptions = await this.prisma.subscription.findMany();
+        const today = new Date();
+        let renewedCount = 0;
+    for (const subscription of subscriptions) {
+      if (subscription.endDate <= today) {
+        renewedCount++;
+        subscription.startDate = today;
+        subscription.endDate = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+        await this.prisma.subscription.update({
+            where:{
+                id: subscription.id
+            },
+            data : {
+                startDate : subscription.startDate,
+                endDate: subscription.endDate}
+            });
+        console.log(subscription);
+
+        const sentAddress = await this.prisma.address.findFirst({
+            where: {
+                userId: subscription.userId,
+            }
+        })
+        //Business logic here, buraya ne yapmak istesek yapabiliriz!
+        if(sentAddress === null)
+        console.log("User has no address to send the package to!");
+        else
+        console.log(`Send new Package to ${sentAddress}`);
+      }
+    }
+        
+        console.log(`${renewedCount} Subscriptios Renewed`);
+      }
 }
