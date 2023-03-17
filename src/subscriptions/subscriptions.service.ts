@@ -52,7 +52,7 @@ export class SubscriptionsService {
             // const istanbulTime = createdDate.toLocaleString('en-US', options);
             // console.log(istanbulTime);
 
-            const endDate  = new Date(createdDate);
+            const endDate = new Date(createdDate);
             endDate.setMonth(endDate.getMonth() + 2);
             // const endDateTimestamp = endDate.getTime();
 
@@ -80,19 +80,19 @@ export class SubscriptionsService {
         }
     }
 
-    async deleteSubscription(@Req() req, id: String){
+    async deleteSubscription(@Req() req, id: String) {
 
         var myId: number = +id;
 
-        try{
+        try {
             const subscription = this.prisma.subscription.delete({
-                where:{
+                where: {
                     id: myId
                 }
             })
 
             return subscription;
-        }catch(error){
+        } catch (error) {
             return error;
         }
     }
@@ -102,34 +102,59 @@ export class SubscriptionsService {
         const subscriptions = await this.prisma.subscription.findMany();
         const today = new Date();
         let renewedCount = 0;
-    for (const subscription of subscriptions) {
-      if (subscription.endDate <= today) {
-        renewedCount++;
-        subscription.startDate = today;
-        subscription.endDate = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
-        await this.prisma.subscription.update({
-            where:{
-                id: subscription.id
-            },
-            data : {
-                startDate : subscription.startDate,
-                endDate: subscription.endDate}
-            });
-        console.log(subscription);
-
-        const sentAddress = await this.prisma.address.findFirst({
-            where: {
-                userId: subscription.userId,
+        for (const subscription of subscriptions) {
+            if (subscription.endDate <= today) {
+                renewedCount++;
+                subscription.startDate = today;
+                subscription.endDate = new Date(today.getFullYear(), today.getMonth() + 2, today.getDate());
+                await this.prisma.subscription.update({
+                    where: {
+                        id: subscription.id
+                    },
+                    data: {
+                        startDate: subscription.startDate,
+                        endDate: subscription.endDate
+                    }
+                });
+                const sentAddress = await this.prisma.address.findFirst({
+                    where: {
+                        userId: subscription.userId,
+                    }
+                })
+                //Business logic here, buraya ne yapmak istesek yapabiliriz!
+                if (sentAddress === null)
+                    console.log("User has no address to send the package to!");
+                else {
+                    try {
+                        const order = await this.prisma.order.create({
+                            data: {
+                                beijeTampon: subscription.beijeTampon,
+                                standardPad: subscription.standardPad,
+                                superPad: subscription.superPad,
+                                superPlusPad: subscription.superPlusPad,
+                                orderPrice: subscription.subscriptionPrice,
+                                user: {
+                                    connect: {
+                                        id: subscription.userId
+                                    }
+                                },
+                            }
+                        });
+                        delete order.id;
+                        delete order.userId;
+                        delete sentAddress.id;
+                        delete sentAddress.userId;
+                        console.log("Order");
+                        console.log(order);
+                        console.log(`Package was sent to `);
+                        console.log(sentAddress);
+                    } catch (error) {
+                        console.log(error);
+                    }
+                }
             }
-        })
-        //Business logic here, buraya ne yapmak istesek yapabiliriz!
-        if(sentAddress === null)
-        console.log("User has no address to send the package to!");
-        else
-        console.log(`Send new Package to ${sentAddress}`);
-      }
+        }
+
+        console.log(`${renewedCount} Subscriptions Renewed`);
     }
-        
-        console.log(`${renewedCount} Subscriptios Renewed`);
-      }
 }
