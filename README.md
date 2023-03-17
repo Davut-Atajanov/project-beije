@@ -35,39 +35,25 @@ $ npm install
 ## Running the app
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
 
-## Test
+
+## Setting up the Database using Docker 
 
 ```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# in background
+$ docker compose up dev-db -d
 ```
 
-## Support
+Don't forget to install all dependencies!
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+```bash
+# Please use Swagger (Open API), this is the link to open in your browser
+$ http://localhost:3001/api
+```
 
-## Stay in touch
+![swagger pic](https://user-images.githubusercontent.com/94652612/225884326-c0870fd1-dddb-4809-b826-d0abbefc0c1a.png)
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-## License
-
-Nest is [MIT licensed](LICENSE).
