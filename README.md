@@ -48,7 +48,7 @@ $ docker compose up dev-db -d
 Don't forget to install Prisma cli
 
 ```bash
-# Must migrate database first
+# Must migrate database after installing npx
 $ npx prisma migrate dev
 ```
 
