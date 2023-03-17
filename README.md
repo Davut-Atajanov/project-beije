@@ -26,10 +26,35 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Initial Requirement
+
+```bash
+# Must have node.js
+```
+
 ## Installation
 
 ```bash
 $ npm install
+```
+
+## Setting up the Database using Docker 
+
+```bash
+# in background
+$ docker compose up dev-db -d
+```
+
+Don't forget to install Prisma cli
+
+```bash
+# Must migrate database first
+$ npx prisma migrate dev
+```
+
+```bash
+# To run Prisma studio
+$ npx prisma studio
 ```
 
 ## Running the app
@@ -39,14 +64,6 @@ $ npm install
 $ npm run start:dev
 ```
 
-
-## Setting up the Database using Docker 
-
-```bash
-# in background
-$ docker compose up dev-db -d
-```
-
 Don't forget to install all dependencies!
 
 ```bash
@@ -54,12 +71,7 @@ Don't forget to install all dependencies!
 $ http://localhost:3001/api
 ```
 
-Don't forget to install Prisma cli
 
-```bash
-# To run Prisma studio
-$ npx prisma studio
-```
 
 ![swagger pic](https://user-images.githubusercontent.com/94652612/225884326-c0870fd1-dddb-4809-b826-d0abbefc0c1a.png)
 
