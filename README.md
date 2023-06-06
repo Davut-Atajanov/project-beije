@@ -71,7 +71,7 @@ Don't forget to install all dependencies!
 $ http://localhost:3001/api
 ```
 
-
+Do not forget to register first, then input the obtained token into login part. After those steps are done, you can freely use this API.
 
 ![swagger pic](https://user-images.githubusercontent.com/94652612/225884326-c0870fd1-dddb-4809-b826-d0abbefc0c1a.png)
 
