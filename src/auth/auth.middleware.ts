@@ -3,6 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 import { ConfigService } from "@nestjs/config";
 import * as jwt from 'jsonwebtoken';
 
+//Basically this whole class is quite useless since I already have a guard
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {
     constructor(private readonly configService: ConfigService){};

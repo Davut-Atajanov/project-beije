@@ -25,9 +25,10 @@ import { BlacklistService } from './auth/blacklist/blacklist.service';
 export class AppModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-      .apply(AuthMiddleware)
-      .exclude({ path: 'auth/signin', method: RequestMethod.POST },{ path: 'auth/signup', method: RequestMethod.POST } )
-      .forRoutes('*');
+      // I was using TWO ways to check for tokens, you can use either but using guard is preferred
+      // .apply(AuthMiddleware)
+      // .exclude({ path: 'auth/signin', method: RequestMethod.POST },{ path: 'auth/signup', method: RequestMethod.POST } )
+      // .forRoutes('*');
 
       consumer
       .apply(BlacklistMiddleware)
